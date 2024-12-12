@@ -16,7 +16,7 @@ def play_game():
     record = get_record()
     print(f"Ваш текущий рекорд: {record}")
 
-    gues_words_count = 0
+    guessed_words_count = 0
     while True:
         word = random.choice(words).lower()
         guessed_letters = set()
@@ -28,6 +28,11 @@ def play_game():
             print(f"Количество жизней: {'♥' * lives}")
 
             guess = input("Назовите букву или слово целиком: ").lower().strip()
+
+            # Проверка, является ли введённое значение цифрой
+            if guess.isdigit():
+                print("Ошибка: Вы ввели цифру. Пожалуйста, вводите только буквы.")
+                continue  # Пропускаем этот ход, не уменьшаем количество жизней
 
             if len(guess) == 1:
                 if guess in guessed_letters:
@@ -41,7 +46,7 @@ def play_game():
             elif len(guess) == len(word):
                 if guess == word:
                     print(f"Поздравляем! Вы угадали слово: {word}")
-                    gues_words_count += 1
+                    guessed_words_count += 1
                     break
                 else:
                     print("Неправильно! Вы теряете жизнь.")
@@ -51,7 +56,7 @@ def play_game():
 
             if all(char in guessed_letters for char in word):
                 print(f"Поздравляем! Вы угадали слово: {word}")
-                gues_words_count += 1
+                guessed_words_count += 1
                 break
 
         if lives == 0:
@@ -60,12 +65,12 @@ def play_game():
         if input("Хотите сыграть ещё раз? (да/нет): ").lower() != "да":
             break
 
-    print(f"Вы угадали {gues_words_count} слов.")
-    if gues_words_count > record:
+    print(f"Вы угадали {guessed_words_count} слов.")
+    if guessed_words_count > record:
         print("Поздравляем! Вы установили новый рекорд!")
-        save_record(gues_words_count)
+        save_record(guessed_words_count)
     else:
-        print(f"Ваш рекорд: {record}")
+        print(f"Ваш рекорд: {record}. До новых встреч!")
 
 
 def select_difficulty():
